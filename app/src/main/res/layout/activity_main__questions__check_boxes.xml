@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_activity_main__check_box_answers_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <CheckBox
+        android:id="@+id/id_activity_main__first_check_box"
+        style="@style/RadioButton" />
+
+    <CheckBox
+        android:id="@+id/id_activity_main__second_check_box"
+        style="@style/RadioButton" />
+
+    <CheckBox
+        android:id="@+id/id_activity_main__third_check_box"
+        style="@style/RadioButton" />
+
+    <CheckBox
+        android:id="@+id/id_activity_main__fourth_check_box"
+        style="@style/RadioButton" />
+
+    <CheckBox
+        android:id="@+id/id_activity_main__fifth_check_box"
+        style="@style/RadioButton" />
+</LinearLayout>

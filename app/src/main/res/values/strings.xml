@@ -8,6 +8,10 @@
     <!-- Main Activity -->
 
     <string name="activity_main__question_number">Question #</string>
+
+    <string name="activity_main__text_entry_question">What is the real name of the ex-boxer Muhammad Ali?</string>
+    <string name="activity_main__text_entry_hint">Type the name here</string>
+
     <string name="activity_main__next_question">Next Question</string>
     <string name="activity_main__show_grading">Show Grading</string>
 

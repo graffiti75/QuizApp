@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,7 +31,9 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     private static final Integer RIGHT_QUESTIONS_NUMBER = 7;
     private static final Integer ANSWERS_NUMBER = 5;
-    private static final Integer QUESTIONS_ASKED = 6;
+    private static final Integer QUESTIONS_ASKED = 7;
+
+    private static final String CASSIUS_CLAY = "cassius clay";
 
     //--------------------------------------------------
     // Attributes
@@ -51,18 +54,27 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     private LinearLayout mRadioLinearLayout;
     private LinearLayout mCheckBoxLinearLayout;
+    private LinearLayout mTextEntryLinearLayout;
 
     private TextView mResultTextView;
+    private EditText mEditText;
     private TextView mQuestionTextView;
     private Button mNextQuestionButton;
+
+    private CheckBox mFirstCheckBox;
+    private CheckBox mSecondCheckBox;
+    private CheckBox mThirdCheckBox;
+    private CheckBox mFourthCheckBox;
+    private CheckBox mFifthCheckBox;
 
     /**
      * Answers.
      */
 
-    private Integer mIndex = 1;
+    private Integer mCurrentQuestion = 1;
     private Integer[] mRightAnswersId = new Integer[] { 3, 1, 2, 1, 3, 1, 2 };
     private Integer[] mAnswersId = new Integer[] { 0, 0, 0, 0, 0, 0, 1 };
+    private String mTextEntryAnswer = "";
 
     //--------------------------------------------------
     // Activity Life Cycle
@@ -86,21 +98,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(homeEnabled);
-            String text = getString(R.string.activity_main__question_number) + mIndex;
+            String text = getString(R.string.activity_main__question_number) + mCurrentQuestion;
             getSupportActionBar().setTitle(text);
         }
     }
 
     private void setLayout() {
-        int questionIndex = mIndex - 1;
+        int questionIndex = mCurrentQuestion - 1;
         int answerIndex = questionIndex * ANSWERS_NUMBER;
         setLinearLayouts();
         setViews(questionIndex);
 
-        if (mIndex < QUESTIONS_ASKED) {
-            setRadioButtons(answerIndex);
-        } else if (mIndex == QUESTIONS_ASKED) {
+        if (mCurrentQuestion == (QUESTIONS_ASKED - 1)) {
             setCheckBoxes(answerIndex);
+        } else if (mCurrentQuestion < (QUESTIONS_ASKED - 1)) {
+            setRadioButtons(answerIndex);
         }
     }
 
@@ -110,17 +122,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         mRadioLinearLayout = (LinearLayout)findViewById(R.id.id_activity_main__radio_answers_linear_layout);
         mCheckBoxLinearLayout = (LinearLayout)findViewById(R.id.id_activity_main__check_box_answers_linear_layout);
+        mTextEntryLinearLayout = (LinearLayout)findViewById(R.id.id_activity_main__text_entry_answers_linear_layout);
     }
 
     private void setViews(Integer questionIndex) {
         mResultTextView = (TextView)findViewById(R.id.id_activity_main__result_text_view);
 
-        if (mIndex <= QUESTIONS_ASKED) {
+        if (mCurrentQuestion < QUESTIONS_ASKED) {
             mQuestionTextView = (TextView) findViewById(R.id.id_activity_main__question_text_view);
             mQuestionTextView.setText(DataItems.QUESTIONS[questionIndex]);
 
             mNextQuestionButton = (Button) findViewById(R.id.id_activity_main__next_question_button);
             mNextQuestionButton.setOnClickListener(this);
+        }
+        if (mCurrentQuestion == QUESTIONS_ASKED) {
+            mEditText = (EditText) findViewById(R.id.id_activity_main__edit_text);
         }
     }
 
@@ -148,23 +164,22 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
     private void setCheckBoxes(int answerIndex) {
-        CheckBox firstCheckBox = (CheckBox)findViewById(R.id.id_activity_main__first_check_box);
-        CheckBox secondCheckBox = (CheckBox)findViewById(R.id.id_activity_main__second_check_box);
-        CheckBox thirdCheckBox = (CheckBox)findViewById(R.id.id_activity_main__third_check_box);
-        CheckBox fourthCheckBox = (CheckBox)findViewById(R.id.id_activity_main__fourth_check_box);
-        CheckBox fifthCheckBox = (CheckBox)findViewById(R.id.id_activity_main__fifth_check_box);
+        mFirstCheckBox = (CheckBox)findViewById(R.id.id_activity_main__first_check_box);
+        mSecondCheckBox = (CheckBox)findViewById(R.id.id_activity_main__second_check_box);
+        mThirdCheckBox = (CheckBox)findViewById(R.id.id_activity_main__third_check_box);
+        mFourthCheckBox = (CheckBox)findViewById(R.id.id_activity_main__fourth_check_box);
+        mFifthCheckBox = (CheckBox)findViewById(R.id.id_activity_main__fifth_check_box);
 
-        answerIndex = setCheckBox(firstCheckBox, answerIndex, true);
-        answerIndex = setCheckBox(secondCheckBox, answerIndex, true);
-        answerIndex = setCheckBox(thirdCheckBox, answerIndex, false);
-        answerIndex = setCheckBox(fourthCheckBox, answerIndex, false);
-        setCheckBox(fifthCheckBox, answerIndex, false);
+        answerIndex = setCheckBox(mFirstCheckBox, answerIndex, true);
+        answerIndex = setCheckBox(mSecondCheckBox, answerIndex, true);
+        answerIndex = setCheckBox(mThirdCheckBox, answerIndex, false);
+        answerIndex = setCheckBox(mFourthCheckBox, answerIndex, false);
+        setCheckBox(mFifthCheckBox, answerIndex, false);
     }
 
     private Integer setCheckBox(CheckBox checkBox, int answerIndex, boolean check) {
         checkBox.setText(DataItems.ANSWERS[answerIndex]);
         checkBox.setChecked(check);
-        checkBox.setOnClickListener(this);
         return (answerIndex + 1);
     }
 
@@ -173,15 +188,19 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     //--------------------------------------------------
 
     private void setNextQuestion() {
-        mIndex++;
-        if (mIndex >= (QUESTIONS_ASKED + 1)) {
+        mCurrentQuestion++;
+        if (mCurrentQuestion > QUESTIONS_ASKED) {
             setGradingLayout();
+        } else if (mCurrentQuestion == QUESTIONS_ASKED) {
+            setTextEntryQuestionLayout();
         } else {
             setQuestionLayout();
         }
     }
 
     private void setGradingLayout() {
+        mTextEntryAnswer = mEditText.getText().toString().toLowerCase();
+
         mQuestionsLinearLayout.setVisibility(View.GONE);
         mResultLinearLayout.setVisibility(View.VISIBLE);
 
@@ -193,21 +212,37 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
     private void setQuestionLayout() {
-        if (mIndex == QUESTIONS_ASKED) {
+        if (mCurrentQuestion == (QUESTIONS_ASKED - 1))  {
             mQuestionsLinearLayout.setVisibility(View.VISIBLE);
             mResultLinearLayout.setVisibility(View.GONE);
 
             mRadioLinearLayout.setVisibility(View.GONE);
             mCheckBoxLinearLayout.setVisibility(View.VISIBLE);
-
-            mNextQuestionButton.setText(R.string.activity_main__show_grading);
+            mTextEntryLinearLayout.setVisibility(View.GONE);
         }
         setLayout();
         initToolbar(false);
     }
 
+    private void setTextEntryQuestionLayout() {
+        if (mCurrentQuestion == QUESTIONS_ASKED) {
+            mQuestionsLinearLayout.setVisibility(View.VISIBLE);
+            mResultLinearLayout.setVisibility(View.GONE);
+
+            mRadioLinearLayout.setVisibility(View.GONE);
+            mCheckBoxLinearLayout.setVisibility(View.GONE);
+            mTextEntryLinearLayout.setVisibility(View.VISIBLE);
+
+            mNextQuestionButton.setText(R.string.activity_main__show_grading);
+        }
+        setLayout();
+        initToolbar(false);
+
+        mQuestionTextView.setText(R.string.activity_main__text_entry_question);
+    }
+
     private Integer getGuessNumber() {
-        // Checks radio buttons answers.
+        // Checks RadioButton's answers.
         Integer cont = 0;
         for (int i = 0; i < mAnswersId.length - 1; i++) {
             if (mAnswersId[i] == mRightAnswersId[i]) {
@@ -215,23 +250,20 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
             }
         }
 
-        // Checks check box answers.
-        Boolean firstCorrectAnswer =
-            (mAnswersId[RIGHT_QUESTIONS_NUMBER - 2] == mRightAnswersId[RIGHT_QUESTIONS_NUMBER - 2])
-            || (mAnswersId[RIGHT_QUESTIONS_NUMBER - 2] == mRightAnswersId[RIGHT_QUESTIONS_NUMBER - 1]);
-        Boolean secondCorrectAnswer =
-            (mAnswersId[RIGHT_QUESTIONS_NUMBER - 1] == mRightAnswersId[RIGHT_QUESTIONS_NUMBER - 2])
-            || (mAnswersId[RIGHT_QUESTIONS_NUMBER - 1] == mRightAnswersId[RIGHT_QUESTIONS_NUMBER - 1]);
-        if (firstCorrectAnswer && secondCorrectAnswer) {
+        // Checks CheckBox'es answers.
+        Boolean checkBoxesChecked = mSecondCheckBox.isChecked() && mThirdCheckBox.isChecked();
+        Boolean checkBoxesNotChecked = !mFirstCheckBox.isChecked() && !mFourthCheckBox.isChecked()
+            && !mFifthCheckBox.isChecked();
+        if (checkBoxesChecked && checkBoxesNotChecked) {
             cont++;
         }
-        return cont;
-    }
 
-    private void setCheckBoxAnswerId(boolean isChecked, int index) {
-        if (isChecked) {
-            mAnswersId[mIndex - 1] = index;
+        // Check TextEntry answer.
+        if (mTextEntryAnswer.equals(CASSIUS_CLAY)) {
+            cont++;
         }
+
+        return cont;
     }
 
     //--------------------------------------------------
@@ -242,19 +274,19 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         switch (checkedId) {
             case R.id.id_activity_main__first_radio_button:
-                mAnswersId[mIndex - 1] = 0;
+                mAnswersId[mCurrentQuestion - 1] = 0;
                 break;
             case R.id.id_activity_main__second_radio_button:
-                mAnswersId[mIndex - 1] = 1;
+                mAnswersId[mCurrentQuestion - 1] = 1;
                 break;
             case R.id.id_activity_main__third_radio_button:
-                mAnswersId[mIndex - 1] = 2;
+                mAnswersId[mCurrentQuestion - 1] = 2;
                 break;
             case R.id.id_activity_main__fourth_radio_button:
-                mAnswersId[mIndex - 1] = 3;
+                mAnswersId[mCurrentQuestion - 1] = 3;
                 break;
             case R.id.id_activity_main__fifth_radio_button:
-                mAnswersId[mIndex - 1] = 4;
+                mAnswersId[mCurrentQuestion - 1] = 4;
                 break;
         }
     }
@@ -265,32 +297,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     @Override
     public void onClick(View view) {
-        Integer id = view.getId();
-        if (id == R.id.id_activity_main__next_question_button) {
-            setNextQuestion();
-        } else {
-            if (mIndex <= RIGHT_QUESTIONS_NUMBER) {
-                CheckBox checkBox = (CheckBox)view;
-                boolean isChecked = checkBox.isChecked();
-                switch (id) {
-                    case R.id.id_activity_main__first_check_box:
-                        setCheckBoxAnswerId(isChecked, 0);
-                        break;
-                    case R.id.id_activity_main__second_check_box:
-                        setCheckBoxAnswerId(isChecked, 1);
-                        break;
-                    case R.id.id_activity_main__third_check_box:
-                        setCheckBoxAnswerId(isChecked, 2);
-                        break;
-                    case R.id.id_activity_main__fourth_check_box:
-                        setCheckBoxAnswerId(isChecked, 3);
-                        break;
-                    case R.id.id_activity_main__fifth_check_box:
-                        setCheckBoxAnswerId(isChecked, 4);
-                        break;
-                }
-                mIndex++;
-            }
-        }
+        setNextQuestion();
     }
 }

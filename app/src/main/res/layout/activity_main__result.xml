@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/id_activity_main__result_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:padding="10dp"
         android:textSize="20sp" />
