@@ -1,0 +1,16 @@
+<resources>
+    <!--=============== APPLICATION ===============-->
+
+    <string name="app_name">QuizApp</string>
+
+    <!--=============== SCREENS ===============-->
+
+    <!-- Main Activity -->
+
+    <string name="activity_main__question_number">Question #</string>
+    <string name="activity_main__next_question">Next Question</string>
+    <string name="activity_main__show_grading">Show Grading</string>
+
+    <string name="activity_main__result">Result</string>
+    <string name="activity_main__guessed">You guessed %1$d from\nall the %2$d questions.</string>
+</resources>

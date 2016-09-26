@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_activity_main__questions_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--=============== QUESTION ===============-->
+
+    <TextView
+        android:id="@+id/id_activity_main__question_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp" />
+
+    <!--=============== ANSWERS ===============-->
+
+    <!-- Radio Buttons -->
+
+    <LinearLayout
+        android:id="@+id/id_activity_main__radio_answers_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/id_activity_main__radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/id_activity_main__first_radio_button"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/id_activity_main__second_radio_button"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/id_activity_main__third_radio_button"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/id_activity_main__fourth_radio_button"
+                style="@style/RadioButton" />
+
+            <RadioButton
+                android:id="@+id/id_activity_main__fifth_radio_button"
+                style="@style/RadioButton" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <!-- Check Boxes -->
+
+    <LinearLayout
+        android:id="@+id/id_activity_main__check_box_answers_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <CheckBox
+            android:id="@+id/id_activity_main__first_check_box"
+            style="@style/RadioButton" />
+
+        <CheckBox
+            android:id="@+id/id_activity_main__second_check_box"
+            style="@style/RadioButton" />
+
+        <CheckBox
+            android:id="@+id/id_activity_main__third_check_box"
+            style="@style/RadioButton" />
+
+        <CheckBox
+            android:id="@+id/id_activity_main__fourth_check_box"
+            style="@style/RadioButton" />
+
+        <CheckBox
+            android:id="@+id/id_activity_main__fifth_check_box"
+            style="@style/RadioButton" />
+    </LinearLayout>
+
+    <!--=============== NEXT QUESTION ===============-->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/id_activity_main__next_question_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/activity_main__next_question"
+        android:textColor="@color/grey_100" />
+</LinearLayout>

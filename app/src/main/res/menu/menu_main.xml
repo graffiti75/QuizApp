@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/id_menu_next"
+        android:title="@string/activity_main__next_question"
+        app:showAsAction="always" />
+</menu>
